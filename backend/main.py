@@ -85,6 +85,7 @@ async def send_message(conversation_id: str, request: SendMessageRequest):
     Send a message and run the 3-stage council process.
     Returns the complete response with all stages.
     """
+
     # Check if conversation exists
     conversation = storage.get_conversation(conversation_id)
     if conversation is None:

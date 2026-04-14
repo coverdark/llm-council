@@ -158,8 +158,18 @@ Provide a clear, well-reasoned final answer that represents the council's collec
 
     messages = [{"role": "user", "content": chairman_prompt}]
 
+    # Find the chairman model configuration
+    chairman_config = next((config for config in COUNCIL_MODELS if config['name'] == CHAIRMAN_MODEL), None)
+    
+    if not chairman_config:
+        # Fallback if chairman model not found
+        return {
+            "model": CHAIRMAN_MODEL,
+            "response": "Error: Chairman model not found in configuration."
+        }
+
     # Query the chairman model
-    response = await query_model(CHAIRMAN_MODEL, messages)
+    response = await query_model(chairman_config, messages)
 
     if response is None:
         # Fallback if chairman fails
@@ -274,8 +284,14 @@ Title:"""
 
     messages = [{"role": "user", "content": title_prompt}]
 
-    # Use gemini-2.5-flash for title generation (fast and cheap)
-    response = await query_model("google/gemini-2.5-flash", messages, timeout=30.0)
+    # Use the first council model for title generation
+    if COUNCIL_MODELS:
+        print(f"using model: {COUNCIL_MODELS[0]}")
+
+        response = await query_model(COUNCIL_MODELS[0], messages, timeout=300.0)
+    else:
+        # Fallback to a generic title if no models are configured
+        return "New Conversation"
 
     if response is None:
         # Fallback to a generic title

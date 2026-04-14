@@ -1,26 +1,46 @@
 """Configuration for the LLM Council."""
 
 import os
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 
-load_dotenv()
+# Load configuration directly from .env file
+config = dotenv_values()
 
-# OpenRouter API key
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+# Alibaba Cloud API configuration (Qwen model)
+LLM_API_KEY = "sk-6b0cc49523ed491d95ae998874619516"
+LLM_API_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+LLM_API_MODEL = "qwen3.6-plus"
 
-# Council members - list of OpenRouter model identifiers
+# Council members - list of model configurations
 COUNCIL_MODELS = [
-    "openai/gpt-5.1",
-    "google/gemini-3-pro-preview",
-    "anthropic/claude-sonnet-4.5",
-    "x-ai/grok-4",
+    {
+        "name": "alibaba/qwen3.6-plus-1",
+        "api_key": LLM_API_KEY,
+        "api_url": LLM_API_BASE_URL,
+        "model": LLM_API_MODEL
+    },
+    {
+        "name": "alibaba/qwen3.6-plus-2",
+        "api_key": LLM_API_KEY,
+        "api_url": LLM_API_BASE_URL,
+        "model": LLM_API_MODEL
+    },
+    {
+        "name": "alibaba/qwen3.6-plus-3",
+        "api_key": LLM_API_KEY,
+        "api_url": LLM_API_BASE_URL,
+        "model": LLM_API_MODEL
+    },
+    {
+        "name": "alibaba/qwen3.6-plus-4",
+        "api_key": LLM_API_KEY,
+        "api_url": LLM_API_BASE_URL,
+        "model": LLM_API_MODEL
+    }
 ]
 
 # Chairman model - synthesizes final response
-CHAIRMAN_MODEL = "google/gemini-3-pro-preview"
-
-# OpenRouter API endpoint
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+CHAIRMAN_MODEL = "alibaba/qwen3.6-plus-1"
 
 # Data directory for conversation storage
 DATA_DIR = "data/conversations"
